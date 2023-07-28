@@ -22,24 +22,6 @@ import { MigrationIntro } from '../stats/MigrationIntro'
 import { StatBar } from '../stats/StatBar'
 import { BaseModal } from './BaseModal'
 
-type Props = {
-  isOpen: boolean
-  handleClose: () => void
-  solution: string
-  guesses: string[]
-  gameStats: GameStats
-  isLatestGame: boolean
-  isGameLost: boolean
-  isGameWon: boolean
-  handleShareToClipboard: () => void
-  handleShareFailure: () => void
-  handleMigrateStatsButton: () => void
-  isHardMode: boolean
-  isDarkMode: boolean
-  isHighContrastMode: boolean
-  numberOfGuessesMade: number
-}
-
 export const StatsModal = ({
   isOpen,
   handleClose,
@@ -48,6 +30,7 @@ export const StatsModal = ({
   gameStats,
   isLatestGame,
   isGameLost,
+  newGameFunction,
   isGameWon,
   handleShareToClipboard,
   handleShareFailure,
@@ -65,9 +48,6 @@ export const StatsModal = ({
         handleClose={handleClose}
       >
         <StatBar gameStats={gameStats} />
-        {ENABLE_MIGRATE_STATS && (
-          <MigrationIntro handleMigrateStatsButton={handleMigrateStatsButton} />
-        )}
       </BaseModal>
     )
   }
@@ -88,35 +68,20 @@ export const StatsModal = ({
         numberOfGuessesMade={numberOfGuessesMade}
       />
       {(isGameLost || isGameWon) && (
-        <div className="mt-5 columns-2 items-center items-stretch justify-center text-center dark:text-white sm:mt-6">
-          <div className="inline-block w-full text-left">
-            {(!ENABLE_ARCHIVED_GAMES || isLatestGame) && (
-              <div>
-                <h5>{NEW_WORD_TEXT}</h5>
-                <Countdown
-                  className="text-lg font-medium text-gray-900 dark:text-gray-100"
-                  date={tomorrow}
-                  daysInHours={true}
-                />
-              </div>
-            )}
-            {ENABLE_ARCHIVED_GAMES && !isLatestGame && (
-              <div className="mt-2 inline-flex">
-                <ClockIcon className="mr-1 mt-2 mt-1 h-5 w-5 stroke-black dark:stroke-white" />
-                <div className="mt-1 ml-1 text-center text-sm sm:text-base">
-                  <strong>{ARCHIVE_GAMEDATE_TEXT}:</strong>
-                  <br />
-                  {format(solutionGameDate, 'd MMMM yyyy', {
-                    locale: DATE_LOCALE,
-                  })}
-                </div>
-              </div>
-            )}
+        <div className="items-space mt-5 columns-2 items-center justify-center text-center dark:text-white sm:mt-6">
+          <div>
+            <button
+              type="button"
+              onClick={newGameFunction}
+              className="mt-2 inline-flex w-full items-center justify-center rounded-md border border-[3px] border-black border-[rgb(120,124,126)] px-4 py-2 text-center text-sm font-medium text-black text-white hover:bg-[rgb(120,124,126)] hover:text-white dark:border-[rgb(75,85,99)] dark:text-white dark:hover:bg-[rgb(75,85,99)]"
+            >
+              New Game
+            </button>
           </div>
           <div>
             <button
               type="button"
-              className="mt-2 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-center text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-base"
+              className="mt-2 inline-flex w-full items-center justify-center rounded-md border border-[3px] border-black border-[rgb(120,124,126)] px-4 py-2 text-center text-sm font-medium text-black text-white hover:bg-[rgb(120,124,126)] hover:text-white dark:border-[rgb(75,85,99)] dark:text-white dark:hover:bg-[rgb(75,85,99)]"
               onClick={() => {
                 shareStatus(
                   solution,
@@ -130,16 +95,9 @@ export const StatsModal = ({
                 )
               }}
             >
-              <ShareIcon className="mr-2 h-6 w-6 cursor-pointer dark:stroke-white" />
               {SHARE_TEXT}
             </button>
           </div>
-        </div>
-      )}
-      {ENABLE_MIGRATE_STATS && (
-        <div>
-          <hr className="mt-4 -mb-4 border-gray-500" />
-          <MigrationIntro handleMigrateStatsButton={handleMigrateStatsButton} />
         </div>
       )}
     </BaseModal>

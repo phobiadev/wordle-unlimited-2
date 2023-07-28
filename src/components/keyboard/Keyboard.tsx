@@ -56,7 +56,7 @@ export const Keyboard = ({
 
   return (
     <div>
-      <div className="mb-1 flex justify-center">
+      <div className="mb-2 flex justify-center">
         {['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'].map((key) => (
           <Key
             value={key}
@@ -67,7 +67,8 @@ export const Keyboard = ({
           />
         ))}
       </div>
-      <div className="mb-1 flex justify-center">
+      <div className="mb-2 flex justify-center">
+        <div className="spacer" style={{ width: 20 }} />
         {['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'].map((key) => (
           <Key
             value={key}
@@ -77,10 +78,11 @@ export const Keyboard = ({
             isRevealing={isRevealing}
           />
         ))}
+        <div className="spacer" style={{ width: 20 }} />
       </div>
       <div className="flex justify-center">
         <Key width={65.4} value="ENTER" onClick={onClick}>
-          {ENTER_TEXT}
+          ENTER
         </Key>
         {['Z', 'X', 'C', 'V', 'B', 'N', 'M'].map((key) => (
           <Key
@@ -92,7 +94,7 @@ export const Keyboard = ({
           />
         ))}
         <Key width={65.4} value="DELETE" onClick={onClick}>
-          {DELETE_TEXT}
+          DELETE
         </Key>
       </div>
     </div>

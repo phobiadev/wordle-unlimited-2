@@ -1,3 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:wght@600&family=Domine:wght@600&family=Handjet:wght@500&family=JetBrains+Mono:wght@500&family=Patua+One&family=Playfair+Display:wght@500&family=Source+Code+Pro:wght@600&family=Source+Serif+4&family=Stint+Ultra+Condensed&display=swap');
+
 html.dark {
-  background-color: rgb(15, 23, 42);
+  background-color: #121213;
+}
+
+.border-gray-600 {
+  border-color: #3a3a3c !important;
+}
+
+.enter-key {
+  font-size: 0.7rem;
+}
+
+.game-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  font-family: 'Patua One', cursive;
+  font-weight: 150;
+  letter-spacing: -0.65px;
 }

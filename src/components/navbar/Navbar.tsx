@@ -22,21 +22,23 @@ export const Navbar = ({
   setIsSettingsModalOpen,
 }: Props) => {
   return (
-    <div className="navbar">
-      <div className="navbar-content px-5 short:h-auto">
+    <div className="navbar ">
+      <div className="navbar-content px-5 dark:border-[#292b2f]">
         <div className="flex">
-          <InformationCircleIcon
-            className="h-6 w-6 cursor-pointer dark:stroke-white"
-            onClick={() => setIsInfoModalOpen(true)}
-          />
           {ENABLE_ARCHIVED_GAMES && (
             <CalendarIcon
               className="ml-3 h-6 w-6 cursor-pointer dark:stroke-white"
               onClick={() => setIsDatePickerModalOpen(true)}
             />
           )}
+          <InformationCircleIcon
+            className="h-6 w-6 cursor-pointer dark:stroke-white"
+            onClick={() => setIsInfoModalOpen(true)}
+          />
         </div>
-        <p className="text-xl font-bold dark:text-white">{GAME_TITLE}</p>
+        <p className="game-title text-xl font-bold dark:text-white">
+          {GAME_TITLE}
+        </p>
         <div className="right-icons">
           <ChartBarIcon
             className="mr-3 h-6 w-6 cursor-pointer dark:stroke-white"
@@ -48,7 +50,7 @@ export const Navbar = ({
           />
         </div>
       </div>
-      <hr></hr>
+      <hr className="border=[rgb(209,213,218)] border-[1px] dark:border-[rgb(58,58,60)]"></hr>
     </div>
   )
 }

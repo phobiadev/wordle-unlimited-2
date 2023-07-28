@@ -16,11 +16,7 @@ export const Alert = ({
   topMost = false,
 }: Props) => {
   const classes = classNames(
-    'fixed z-20 top-14 left-1/2 transform -translate-x-1/2 max-w-sm shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden',
-    {
-      'bg-rose-500 text-white': variant === 'error',
-      'bg-blue-500 text-white': variant === 'success',
-    }
+    'fixed z-20 top-14 left-1/2 transform -translate-x-1/2 max-w-sm rounded-[5px] pointer-events-auto text-white bg-black dark:text-black dark:bg-white overflow-hidden'
   )
 
   return (

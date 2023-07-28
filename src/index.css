@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 :root {
-  --animation-speed: 1000ms;
+  --animation-speed: 250ms;
   --animation-speed-fast: 250ms;
   --default-cell-bg-color: theme('colors.white');
-  --default-cell-border-color: theme('colors.black');
+  --default-cell-border-color: theme('colors.slate.200');
   --default-cell-text-color: theme('colors.black');
   --absent-cell-bg-color: theme('colors.slate.400');
   --correct-cell-bg-color: theme('colors.green.400');
@@ -14,10 +14,15 @@
 }
 
 .dark {
-  --default-cell-bg-color: theme('colors.slate.900');
-  --default-cell-border-color: theme('colors.white');
+  --default-cell-bg-color: #121213;
+  --default-cell-border-color: theme('colors.gray.600');
   --default-cell-text-color: theme('colors.white');
   --absent-cell-bg-color: theme('colors.slate.700');
+}
+
+.dark .dark\:bg-gray-800 {
+  --tw-bg-opacity: 0.7;
+  background-color: rgb(18 18 19 / var(--tw-bg-opacity)) !important;
 }
 
 .high-contrast {
@@ -27,11 +32,11 @@
 
 .cell-fill-animation {
   animation: onTypeCell linear;
-  animation-duration: 0.35s;
+  animation-duration: 0.1s;
 }
 
 .cell-reveal {
-  animation-duration: 0.35s;
+  animation-duration: 0.2s;
   animation-timing-function: linear;
   animation-fill-mode: backwards;
 }
@@ -49,7 +54,7 @@
 }
 
 .cell-reveal > .letter-container {
-  animation: offsetLetterFlip 0.35s linear;
+  animation: offsetLetterFlip 0.2s linear;
   animation-fill-mode: backwards;
 }
 
@@ -75,6 +80,19 @@ svg.cursor-pointer:hover {
   height: 3rem;
   align-items: center;
   justify-content: space-between;
+}
+
+@media (max-width: 600px) {
+  .navbar-content {
+    height: 2.25rem;
+  }
+
+  .game-title {
+    left: 3.25rem !important;
+    transform: none !important;
+    font-size: 1.525rem !important;
+    font-weight: 150;
+  }
 }
 
 .right-icons {
@@ -166,10 +184,6 @@ svg.cursor-pointer:hover {
   100% {
     transform: scale(1);
   }
-}
-
-.shadowed {
-  text-shadow: 1px 1px 1px #000000;
 }
 
 @keyframes jiggle {

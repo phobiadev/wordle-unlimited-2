@@ -26,6 +26,15 @@ export const isWordInWordList = (word: string) => {
   )
 }
 
+function choose(choices: Array<string>) {
+  var index = Math.floor(Math.random() * choices.length)
+  return choices[index]
+}
+
+export const randomWord = () => {
+  return localeAwareUpperCase(choose(WORDS))
+}
+
 export const isWinningWord = (word: string) => {
   return solution === word
 }

@@ -46,10 +46,9 @@ import {
   findFirstUnusedReveal,
   getGameDate,
   getIsLatestGame,
-  isWinningWord,
   isWordInWordList,
+  randomWord,
   setGameDate,
-  solution,
   solutionGameDate,
   unicodeLength,
 } from './lib/words'
@@ -64,6 +63,7 @@ function App() {
   const { showError: showErrorAlert, showSuccess: showSuccessAlert } =
     useAlert()
   const [currentGuess, setCurrentGuess] = useState('')
+  const [solution, setSolution] = useState(randomWord())
   const [isGameWon, setIsGameWon] = useState(false)
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
@@ -83,23 +83,7 @@ function App() {
     getStoredIsHighContrastMode()
   )
   const [isRevealing, setIsRevealing] = useState(false)
-  const [guesses, setGuesses] = useState<string[]>(() => {
-    const loaded = loadGameStateFromLocalStorage(isLatestGame)
-    if (loaded?.solution !== solution) {
-      return []
-    }
-    const gameWasWon = loaded.guesses.includes(solution)
-    if (gameWasWon) {
-      setIsGameWon(true)
-    }
-    if (loaded.guesses.length === MAX_CHALLENGES && !gameWasWon) {
-      setIsGameLost(true)
-      showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
-        persist: true,
-      })
-    }
-    return loaded.guesses
-  })
+  const [guesses, setGuesses] = useState([])
 
   const [stats, setStats] = useState(() => loadStats())
 
@@ -108,6 +92,10 @@ function App() {
       ? localStorage.getItem('gameMode') === 'hard'
       : false
   )
+
+  const isWinningWord = (word) => {
+    return word === solution
+  }
 
   useEffect(() => {
     // if no game state on load,
@@ -248,7 +236,9 @@ function App() {
       guesses.length < MAX_CHALLENGES &&
       !isGameWon
     ) {
-      setGuesses([...guesses, currentGuess])
+      let newGuesses = JSON.parse(JSON.stringify(guesses))
+      newGuesses.push(currentGuess)
+      setGuesses(newGuesses)
       setCurrentGuess('')
 
       if (winningWord) {
@@ -264,7 +254,7 @@ function App() {
         }
         setIsGameLost(true)
         showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
-          persist: true,
+          persist: false,
           delayMs: REVEAL_TIME_MS * solution.length + 1,
         })
       }
@@ -281,16 +271,14 @@ function App() {
           setIsSettingsModalOpen={setIsSettingsModalOpen}
         />
 
-        {!isLatestGame && (
-          <div className="flex items-center justify-center">
-            <ClockIcon className="h-6 w-6 stroke-gray-600 dark:stroke-gray-300" />
-            <p className="text-base text-gray-600 dark:text-gray-300">
-              {format(gameDate, 'd MMMM yyyy', { locale: DATE_LOCALE })}
-            </p>
-          </div>
-        )}
+        {/* <button onClick={()=> {
+          setSolution("MOIST")
+          setGuesses([])
+          setIsGameWon(false)
+          
+        }}>new game test</button> */}
 
-        <div className="mx-auto flex w-full grow flex-col px-1 pt-2 pb-8 sm:px-6 md:max-w-7xl lg:px-8 short:pb-2 short:pt-2">
+        <div className="mx-auto flex w-full grow flex-col px-1 pt-2 pb-2 sm:px-6 md:max-w-7xl lg:px-8 short:pb-2 short:pt-2">
           <div className="flex grow flex-col justify-center pb-6 short:pb-2">
             <Grid
               solution={solution}
@@ -321,6 +309,13 @@ function App() {
             isLatestGame={isLatestGame}
             isGameLost={isGameLost}
             isGameWon={isGameWon}
+            newGameFunction={() => {
+              setSolution(randomWord())
+              setGuesses([])
+              setIsGameWon(false)
+              setIsGameLost(false)
+              setIsStatsModalOpen(false)
+            }}
             handleShareToClipboard={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
             handleShareFailure={() =>
               showErrorAlert(SHARE_FAILURE_TEXT, {
@@ -335,15 +330,6 @@ function App() {
             isDarkMode={isDarkMode}
             isHighContrastMode={isHighContrastMode}
             numberOfGuessesMade={guesses.length}
-          />
-          <DatePickerModal
-            isOpen={isDatePickerModalOpen}
-            initialDate={solutionGameDate}
-            handleSelectDate={(d) => {
-              setIsDatePickerModalOpen(false)
-              setGameDate(d)
-            }}
-            handleClose={() => setIsDatePickerModalOpen(false)}
           />
           <MigrateStatsModal
             isOpen={isMigrateStatsModalOpen}
